@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTEC Flint Install Code Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Excel libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+    <h1>KTEC Flint Install Code Generator</h1>
+    
+    <div id="loading" class="loading">Loading build data...</div>
+    
+    <div id="tool-container" style="display: none;">
+        <!-- Excel Import Section -->
+        <div class="form-group">
+            <h3>Import Data from Excel</h3>
+            <p>Upload your Excel file with build data, install codes, and compatibility information.</p>
+            <input type="file" id="excel-upload" accept=".xlsx, .xls">
+            <div id="upload-status"></div>
+            <div style="margin-top: 10px;">
+                <button id="clear-saved-data" class="reset-button">Clear Saved Data</button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <h3>Build Selection</h3>
+            <div class="filter-container">
+                <label for="build-search">Search Builds:</label>
+                <input type="text" id="build-search" class="search-box" placeholder="Enter build number...">
+            </div>
+            
+            <div id="builds-container" style="max-height: 300px; overflow-y: auto;">
+                <table id="builds-table">
+                    <thead>
+                        <tr>
+                            <th>Build Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Builds will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="result">
+            <h3>Required Install Codes for Selected Build</h3>
+            <div id="selected-build-info">
+                <p><strong>Selected Build:</strong> <span id="selected-build-number"></span></p>
+                <div class="editable-description">
+                    <label for="build-description"><strong>Notes:</strong></label>
+                    <textarea id="build-description" placeholder="Add your notes here..."></textarea>
+                </div>
+            </div>
+            
+            <div class="filter-container">
+                <label for="code-search">Filter Install Codes:</label>
+                <input type="text" id="code-search" class="search-box" placeholder="Search install codes...">
+            </div>
+            
+            <div id="codes-container">
+                <table id="codes-table">
+                    <thead>
+                        <tr>
+                            <th>Install Code</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Install codes will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Add-on Section -->
+            <div class="addon-section">
+                <h3>Add-On Selection</h3>
+                <div class="filter-container">
+                    <label for="addon-search">Search Add-Ons:</label>
+                    <input type="text" id="addon-search" class="search-box" placeholder="Enter add-on name...">
+                </div>
+                
+                <div id="addons-container" style="max-height: 300px; overflow-y: auto;">
+                    <table id="addons-table" class="addon-table">
+                        <thead>
+                            <tr>
+                                <th>Add-On</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Add-ons will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="selected-addons">
+                    <h4>Selected Add-Ons</h4>
+                    <div id="selected-addons-list">
+                        <p class="no-addons">No add-ons selected</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: right;">
+                <button id="export-excel" class="print-button">Export Config</button>
+                <button id="print" class="print-button">Print Results</button>
+                <button id="reset" class="reset-button">Reset Selection</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Print Template -->
+    <div id="print-container">
+        <div class="print-header">
+            <h2>KTEC Flint Install Code Reference</h2>
+            <div class="print-logo">KTEC Flint</div>
+        </div>
+        
+        <div class="print-section">
+            <div class="print-build-info">
+                <div class="print-build-id" id="print-build-id"></div>
+                <div class="print-date" id="print-date"></div>
+            </div>
+            
+            <div class="print-notes" id="print-notes"></div>
+        </div>
+        
+        <div class="print-section">
+            <h3>Required Install Codes</h3>
+            <div class="print-compatible-codes">
+                <table id="print-codes-table">
+                    <thead>
+                        <tr>
+                            <th>Install Code</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Compatible install codes will be printed here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="print-addons-section" id="print-addons-section">
+            <h3>Selected Add-Ons</h3>
+            <div id="print-addons-list">
+                <!-- Selected add-ons will be printed here -->
+            </div>
+        </div>
+        
+        <div class="print-footer">
+            Generated on <span id="print-timestamp"></span>
+            <div>KTEC Flint Install Code Generator</div>
+        </div>
+        
+        <div class="print-controls">
+            <button id="close-print" class="close-print-button">Cancel</button>
+            <button id="actual-print" class="actual-print-button">Print Now</button>
+        </div>
+    </div>
+
+    <!-- Include the config.js file for default data -->
+    <script src="config.js"></script>
+    
+    <!-- Include modular JS files -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>
